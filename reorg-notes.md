@@ -13,6 +13,7 @@ Notable changes:
 - Mixed use of numbered headings, sections, and numbered reference points have been eliminated in favor of a single system of numered headings with numbered lists. Specific points can still be referenced in this new system.
 - In the original XML spec, `<code>` tags were used to distinguish units and other technical pieces. These have been replaced with the standard Markdown use of backticks (`).
 - Numerous organization names and standards were distinguished with `<emph>` (i.e. italics). These have been largely replaced in favor of links to organization websites or other source information.
+- Algebra and other mathematical equations take advantage of LaTeX math notation. Section 3.0.5.2 is an example of clarity provided with this formatting.
 - Typos corrected throughout.
 
 Questions and concerns for future consideration:

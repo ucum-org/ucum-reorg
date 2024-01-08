@@ -154,7 +154,7 @@ ISO 2955 and ANSI X3.50 actually do not allow a plus sign leading a positive exp
 
 Up until revision 1.9 there was a third clause “Since a unit term in parenthesis can be used in place of a simple unit, an exponent may follow on a closing parenthesis which raises the whole term within the parentheses to the power.” However this feature was inconsistent with any BNF or other syntax description ever provided, was never used and seems to have no relevant use case. For this reason this clause has been stricken. This is a tentative change. Users who have used this feature in the past, should please comment on this deprecation. If we receive indication that this feature was used by anyone, we would undo the deprecation. If no comments are received, the deprecation continues to take effect.
 
-### Exhibit 1: UCUM syntax in [Backus-Naur form](https://wikipedia.org/wiki/Backus–Naur_form) (BNF)
+#### Exhibit 1: UCUM syntax in [Backus-Naur form](https://wikipedia.org/wiki/Backus–Naur_form) (BNF)
 | Entity          |     | Expression                                                                                   |
 | --------------- | --- | -------------------------------------------------------------------------------------------- |
 | `<sign>`        | ::= | `+` \| `-`                                                                                   |
@@ -168,95 +168,241 @@ Up until revision 1.9 there was a third clause “Since a unit term in parenthes
 | `<term>`        | ::= | `<term>.<component>` \| `<term>/<component>` \| `<component>`                                |
 | `<main-term>`   | ::= | `/<term>` \| `<term>`                                                                        |
 | `<annotation>`  | ::= | `{<ANNOTATION-STRING>}`                                                                      |
+#### Figure 1: Pushdown-state automaton describing the syntax
+![](assets/images/ucum-state-automaton.gif)
 
 ## 2.3 The Predicate “Metric”
 
-§11 metric and non-metric unit atoms        ■1 Only metric unit atoms may be combined with a prefix.    ■2 To be metric or not to be metric is a predicate assigned to each unit atom where that unit atom is defined.    ■3 All base units are metric. No non-metric unit can be part of the basis.    ■4 A unit must be a quantity on a ratio scale in order to be metric.
+1. Only metric unit atoms may be combined with a prefix.
+
+2. To be metric or not to be metric is a predicate assigned to each unit atom where that unit atom is defined.
+
+3. All base units are metric. No non-metric unit can be part of the basis.
+
+4. A unit must be a quantity on a ratio scale in order to be metric.
 
 The metric predicate accounts for the fact that there are units that are prefixed and others that are not. This helps to disambiguate the parsing of simple units into prefix and atom.
 
 To determine whether a given unit atom is metric or not is not trivial. It is a cultural phenomenon, subject to change, just like language, the meaning of words and how words can be used. At one time we can clearly tell right or wrong useage of words, but these decisions may need to be revised with the passage of time.
 
-Generally, metric units are those defined “in the spirit” of the metric system, that emerged in France of the 18th century and was rapidly adopted by scientists. Metric units are usually based on reproducible natural phenomena and are usually not part of a system of compareable units with different magintudes, especially not if the ratios of these units are not powers of 10. Instead, metric units use multiplier prefixes that magnify or diminish the value of the unit by powers of ten.
+Generally, metric units are those defined “in the spirit” of the metric system, that emerged in France of the 18th Century and was rapidly adopted by scientists. Metric units are usually based on reproducible natural phenomena and are usually not part of a system of compareable units with different magintudes, especially not if the ratios of these units are not powers of 10. Instead, metric units use multiplier prefixes that magnify or diminish the value of the unit by powers of ten.
 
 Conversely, customary units are in the spirit of the middle age as most of them can be traced back into a time around the 10th century, some are even older from the Roman and Babylonian empires. Most customary units are based on the average size of human anatomical or botanic structures (e.g., foot, ell, fathom, grain, rod) and come in series of comparable units with ratios 1/2, 1/4, 1/12, 1/16, and others. Thus all customary units are non-metric
 
 Not all units from ISO 1000 are metric as degree, minute and second of plane angle are non-metric as well as minute, hour, day, month, and year. The second is a metric unit because it is a part of the SI basis, although it used to be part of a series of customary units (originating in the Babylonian era).
 
-Furthermore, for a unit to be metric it must be a quantity on a ratio scale where multiplication and division with scalars are defined. The Comité Consultatif d'Unités (CCU) decided in February 1995 that SI prefixes may be used with the degree Celsius. This statement has not been made explicitly before. This is an unfortunate decision because difference-scale units like the degree Celsius have no multiplication operation, so that the prefix value could be multiplied with the unit. Instead the prefix at non-ratio units scales the measurement value. One dekameter is 10 times of a meter, but there is no meaning to 10 times of 1 °C in the same way as 30 °C are not 3 times as much as 10 °C. See §§21ff on how UCUM finds a way to accomodate this different use of prefixes at units such as the degree Celsius, bel or neper.
+Furthermore, for a unit to be metric it must be a quantity on a ratio scale where multiplication and division with scalars are defined. The [Comité Consultatif d'Unités]() (CCU) decided in February 1995 that SI prefixes may be used with the degree Celsius. This statement has not been made explicitly before. This is an unfortunate decision because difference-scale units like the degree Celsius have no multiplication operation, so that the prefix value could be multiplied with the unit. Instead the prefix at non-ratio units scales the measurement value. One dekameter is 10 times of a meter, but there is no meaning to 10 times of 1 °C in the same way as 30 °C are not 3 times as much as 10 °C. See §§21ff on how UCUM finds a way to accomodate this different use of prefixes at units such as the degree Celsius, bel or neper.
 
 ## 2.4 Style
 
-Except for the rule on curly braces (§12), the rules on style govern the creation of the tables of unit atoms not their individual use. Users of UCUM need not care about style rules ( §§13–15) because users just use the symbols defined in the tables. Hence, style rules do not affect conformance to UCUM. New submissions of unit atoms, however, must conform to the style rules.
+Except for the rule on curly braces (§12), the rules on style govern the creation of the tables of unit atoms not their individual use. Users of UCUM need not care about style rules (§§13–15) because users just use the symbols defined in the tables. Hence, style rules do not affect conformance to UCUM. New submissions of unit atoms, however, must conform to the style rules.
 
-§12 curly braces        ■1 Curly braces may be used to enclose annotations that are often written in place of units or behind units but that do not have a proper meaning of a unit and do not change the meaning of a unit.    ■2 Annotations have no semantic value.
+### 2.4.1 Curly Braces
 
-For example one can write “%{vol}”, “ kg{total}”, or “{RBC}” (for “red blood cells”) as pseudo-units. However, these annotations do not have any effect on the semantics, which is why these example expressions are equivalent to “ %”, “kg”, and “ 1” respectively.
+1. Curly braces may be used to enclose annotations that are often written in place of units or behind units but that do not have a proper meaning of a unit and do not change the meaning of a unit.
 
-§13 underscore        ■1 When in print a unit would have a subscript, an underscore (‘ _’) is used to separate the subscript from the stem of the unit symbol.   ■2 The subscript is part of the unit atom.    ■3 subscripts are used to disambiguate the two units with the same name but different meanings.
+2. Annotations have no semantic value.
 
-For example when distinguishing the International Table calorie from the thermochemical calorie, we would use 1 calIT or 1 cal th in print. UCUM defines the symbols “ cal_IT” and “ cal_th” with the underscore signifying that “IT” and “th” are subscripts. Other examples are the distinctions between the Julian and Gregorian calendar year from the tropical year or the british imperial gallon from the U.S. gallon (see §31 and §§37ff).
+For example one can write `%{vol}`, `kg{total}`, or `{RBC}` (for “red blood cells”) as pseudo-units. However, these annotations do not have any effect on the semantics, which is why these example expressions are equivalent to `%`, `kg`, and `1` respectively.
 
-§14 square brackets        ■1 Square brackets enclose suffixes of unit symbols that change the meaning of a unit stem.    ■2 All customary units shall be enclosed completely by square brackets.    ■3 Other unit atoms shall be enclosed in square brackets if they are very rare, if they will conflict with other units, or if they are normally not used as a unit symbol but do have a proper meaning as a unit in UCUM.    ■4 Square brackets are part of the unit atom.
+### 2.4.2 Underscore
 
-For example 1 m H2O is written as “ m[H2O]” in UCUM because the suffix H 2O changes the meaning of the unit atom for meter (length) to a unit of pressure.
+1. When in print a unit would have a subscript, an underscore (`_`) is used to separate the subscript from the stem of the unit symbol.
+
+2. The subscript is part of the unit atom.
+
+3. Subscripts are used to disambiguate the two units with the same name but different meanings.
+
+For example when distinguishing the International Table calorie from the thermochemical calorie, we would use 1 cal<sub>IT</sub> or 1 cal<sub>th</sub> in print. UCUM defines the symbols `cal_IT` and `cal_th` with the underscore signifying that “IT” and “th” are subscripts. Other examples are the distinctions between the Julian and Gregorian calendar year from the tropical year or the British imperial gallon from the U.S. gallon (see §31 and §§37ff).
+
+### 2.4.3 Square Brackets
+
+1. Square brackets enclose suffixes of unit symbols that change the meaning of a unit stem.
+
+2. All customary units shall be enclosed completely by square brackets.
+
+3. Other unit atoms shall be enclosed in square brackets if they are very rare, if they will conflict with other units, or if they are normally not used as a unit symbol but do have a proper meaning as a unit in UCUM.
+
+4. Square brackets are part of the unit atom.
+
+For example 1 m H2O is written as `m[H2O]` in UCUM because the suffix H<sub>2</sub>O changes the meaning of the unit atom for meter (length) to a unit of pressure.
 
 Customary units are defined in UCUM in order to accomodate practical needs. However metric units are still prefered and the customary symbols should not interfere with metric symbols in any way. Thus, customary units are “stigmatized” by enclosing them into square brackets.
 
 If unit symbols for the purpose of display and print are derived from UCUM units, the square brackets can be removed. However, display units are out of scope of UCUM.
 
-§15 apostrophe        ■1 The apostrophe (‘'’) is used to separate words or abbreviated words in a multi-word unit symbol.    ■2 Since units are mathematically defined symbols and not abbreviations of words, multi-word unit symbols should be defined only to reflect existing habits, not in order to create new ones.    ■3 Multi-word units should always be enclosed in square brackets.
+### 2.4.4 Apostrophe
 
-For example, such legacy units called “Bodansky unit” or “Todd unit” have the unit symbols “ [bdsk'U]”, and “ [todd'U]” respectively.
+1. The apostrophe (`'`) is used to separate words or abbreviated words in a multi-word unit symbol.
+
+2. Since units are mathematically defined symbols and not abbreviations of words, multi-word unit symbols should be defined only to reflect existing habits, not in order to create new ones.
+
+3. Multi-word units should always be enclosed in square brackets.
+
+For example, such legacy units called “Bodansky unit” or “Todd unit” have the unit symbols `[bdsk'U]`, and `[todd'U]` respectively.
 
 
 # 3 Semantics
 
-§16 preliminaries        ■1 The semantics of UCUM is defined by the algebraic operations of multiplication, division and exponentiation between units, by the equivalence relations of equality and commensurability of units, and by the multiplication of a unit with a scalar.    ■2 Every expression in UCUM is mapped to one and only one semantic element. But every semantic element may have more than one valid representant in UCUM.    ■3 The set of expressions in UCUM is infinite.
+### 3.0.1 Preliminaries
 
-§17 equality and commensurability        ■1 The set of expressions in UCUM has two binary, symmetric, reflexive, and transitive relations (equivalence relations) “equals” = and “is commensurable with” ~. All expressions that are equal are also commensurable but not all commensurable expressions are equal.
+1. The semantics of UCUM is defined by the algebraic operations of multiplication, division and exponentiation between units, by the equivalence relations of equality and commensurability of units, and by the multiplication of a unit with a scalar.
 
-§18 algebra of units        ■1 The equivalence classes generated by the equality relation = are called units.    ■2 The set of units U has a binary multiplication operator · that is associative and commutative and has the neutral element 1 (so called the unity). For each unit u ∈ U there is an inverse unit u-1 such that u · u-1 = 1. Thus, (U, ·) is an Abelian group.    ■3 The division operation u / v is defined as u · v-1.   ■4 The exponentiation operation with integer exponents n is defined as un = Π1nu.    ■5 The product u' = ru of a real number scalar with the unit u is also a unit, where u' ~ u.
+2. Every expression in UCUM is mapped to one and only one semantic element. But every semantic element may have more than one valid representant in UCUM.
 
-§19 dimension and magnitude        ■1 The equivalence classes generated by the commensurability relation ~ are called dimensions. The set D of dimensions is infinite in principle, but only a finite subset of dimensions are used in practice. Thus, implementations of UCUM need not be able to represent the infinite set of dimensions.    ■2 Two commensurable units that are not equal differ only by their magnitude.    ■3 The quotient u / v of any two commensurable units u ~ v is of the same dimension as the unity (u / v ~ 1). This quotient is also equal to the unity multiplied with a scalar r: u / v = r1, where r is called the relative magnitude of u regarding v.
+3. The set of expressions in UCUM is infinite.
 
-§20 base units        ■1 Any system of units is constructed from a finite set B of mutually independent base units B = { b1, b2, ..., bn }, on which any other unit u ∈ U is defined as u = r1b1u1 · r2b2u2 · ... · rnbnun, where r = r1 · r2 ·· · rn is called the magnitude of the unit u regarding B.    ■2 With respect to a basis B every unit can thus be represented as a pair (r, û) of magnitude r and dimension û = ( u1, u2, ..., un).    ■3 Two sets of base units are equivalent if there is an isomorphism between the sets of units that they generate.
+### 3.0.2 Equality and Commensurability
+
+1. The set of expressions in UCUM has two binary, symmetric, reflexive, and transitive relations (equivalence relations) “equals” `=` and “is commensurable with” `~`. All expressions that are equal are also commensurable but not all commensurable expressions are equal.
+
+### 3.0.3 Algebra of Units
+
+1. The equivalence classes generated by the equality relation $=$ are called _units_.
+
+2. The set of units $U$ has a binary multiplication operator $·$ that is associative and commutative and has the neutral element $1$ (so called _the unity_). For each unit $u \in U$ there is an inverse unit $u^{-1}$ such that $u · u^{-1} = 1$. Thus, $(U, ·)$ is an Abelian group.
+
+3. The division operation $u / v$ is defined as $u·v^{-1}$.
+
+4. The exponentiation operation with integer exponents $n$ is defined as $un = Π_1^nu$.
+
+5. The product $u' = ru$ of a real number scalar with the unit $u$ is also a unit, where $u' ~ u$.
+
+### 3.0.4 Dimension and Magnitude
+
+1. The equivalence classes generated by the commensurability relation $\sim$ are called _dimensions_. The set D of dimensions is infinite in principle, but only a finite subset of dimensions are used in practice. Thus, implementations of UCUM need not be able to represent the infinite set of dimensions.    
+
+2. Two commensurable units that are not equal differ only by their magnitude.
+
+3. The quotient $u / v$ of any two commensurable units $u \sim v$ is of the same dimension as the unity $(u / v \sim 1)$. This quotient is also equal to the unity multiplied with a scalar $r$: $u / v = r1$, where $r$ is called the _relative magnitude_ of $u$ regarding $v$.
+
+### 3.0.5 Base Units
+
+1. Any system of units is constructed from a finite set $B$ of mutually independent base units $B = \{ b_1, b_2, \dots, b_n \}$, on which any other unit $u \in U$ is defined as $u = r_1b_1^{u_1} · r_2b_2^{u_2} · \dots · r_nb_n^{u_n}$, where $r = r_1 · r_2 \dots r_n$ is called the _magnitude_ of the unit $u$ regarding $B$.
+
+2. With respect to a basis $B$ every unit can thus be represented as a pair $(r, û)$ of magnitude $r$ and dimension $û = ( u_1, u_2, \dots, u_n)$.
+
+3. Two sets of base units are equivalent if there is an isomorphism between the sets of units that they generate.
 
 §19.1 allows to limit the set of supported dimensions. Most practically used units contain exponents of -4 to +4. Thus if memory is limited, 4 bit per component of the dimension vector could be sufficient.
 
-## 3.1 Special Units on non-ratio Scales
+## 3.1 Special Units on Non-Ratio Scales
 
-§21 special units        ■1 Those symbols that are used as units that imply a measurement on a scale other than a ratio scale (e.g., interval scale, logarithmic scale) are defined differently. These do not represent proper units as elements of the group (U,·). Therefore those special semantic entities are called special units, as opposed to proper units. The set of special units is denoted S, where S ∩ U = {}.    ■2 A special unit s ∈ S is defined as the triple (u, fs, fs-1) where u ∈ U is the “corresponding” proper unit of s and where fs and fs-1 are mutually inverse real functions converting the measurement value to and from the special unit.    ■3 Although not elements of U, special units are said to be “of the same dimension” or “commensurable with” their corresponding proper unit u and the class of units commensurable with u. This can be expressed by means of a binary, symmetric, transitive and reflexive relation ≈ on U ∪ S.
+### 3.1.1 Special Units
 
-The functions fs and fs-1 are applied as follows: let rs be the numeric measurement value expressed in the special unit s and let m be the corresponding dimensioned quantity, i.e., the measurement with proper unit u. Now, rs = fs(m/u) converts the proper measurement to the special unit and m = fs-1(rs) × u does the inverse.
+1. Those symbols that are used as units that imply a measurement on a scale other than a ratio scale (e.g., interval scale, logarithmic scale) are defined differently. These do not represent proper units as elements of the group $(U,\cdot)$. Therefore those special semantic entities are called _special units_, as opposed to _proper units_. The set of special units is denoted $S$, where $S \cap U = \{\}$.
 
-§22 operations on special units        ■1 In theory, special units cannot take part in any algebraic operations, neither involving other units, nor themselves (exponentiation) nor involving scalars.    ■2 Special units are therefore non-metric units.    ■3 However, due to the requirement of the SI that does allow prefixes on the degree Celsius, special units may be scaled trough a prefix or an arbitrary numeric factor.    ■4 The scale factor α is an additional component of the special unit, which in turn is defined by a quadruple s = (u, fs, fs-1, α). When the functions fs and fs-1 are applied to a measurement value x to convert to and from the special unit the scale factor is applied as follows: x' = fs(x) / α converts from x expressed in the corresponding proper unit to x' in terms of the special unit and x = fs-1(αx') does the reverse.    ■5 Multiplication of a special unit s = (u, fs, fs-1, α) with a scalar β is defined as βs = (u, fs, fs-1, βα). Multiplication of a special unit s with a dimensionless unit r1 is defined as rs.
+2. A special unit $s \in S$ is defined as the triple $(u, f_s, f_s^{-1})$ where $u \in U$ is the “corresponding” proper unit of $s$ and where $f_s$ and $f_s^{-1}$ are mutually inverse real functions converting the measurement value to and from the special unit.
+
+3. Although not elements of $U$, special units are said to be “of the same dimension” or “commensurable with” their corresponding proper unit $u$ and the class of units commensurable with $u$. This can be expressed by means of a binary, symmetric, transitive and reflexive relation $\approx$ on $U \cup S$.
+
+The functions $f_s$ and $f_s^{-1}$ are applied as follows: let $r_s$ be the numeric measurement value expressed in the special unit $s$ and let $m$ be the corresponding dimensioned quantity, i.e., the measurement with proper unit $u$. Now, $r_s = f_s(m/u)$ converts the proper measurement to the special unit and $m = f_s^{-1}(r_s) × u$ does the inverse.
+
+### 3.1.2 Operations on Special Units
+
+1. In theory, special units cannot take part in any algebraic operations, neither involving other units, nor themselves (exponentiation) nor involving scalars.
+
+2. Special units are therefore non-metric units.
+
+3. However, due to the requirement of the SI that does allow prefixes on the degree Celsius, special units may be _scaled_ through a prefix or an arbitrary numeric factor.
+
+4. The scale factor $\alpha$ is an additional component of the special unit, which in turn is defined by a quadruple $s = (u, f_s, f_s^{-1}, \alpha)$. When the functions $f_s$ and $f_s^{-1}$ are applied to a measurement value $x$ to convert to and from the special unit the scale factor is applied as follows: $x' = f_s(x) / \alpha$ converts from $x$ expressed in the corresponding proper unit to $x'$ in terms of the special unit and $x = f_s^{-1}(\alpha x')$ does the reverse.
+
+5. Multiplication of a special unit $s = (u, f_s, f_s^{-1}, \alpha)$ with a scalar $\beta$ is defined as $\beta s = (u, f_s, f_s^{-1}, \beta\alpha)$. Multiplication of a special unit $s$ with a dimensionless unit $r1$ is defined as $rs$.
 
 Since prefixes have a scalar value that multiplies the unit atom, a unit must at least have a defined multiplication operation with a scalar in order to be a candidate for the metric predicate. All proper units are candidates for the metric property, special units are no such candidates.
 
-The Comité Consultatif d'Unités (CCU) decided in February 1995 that any SI prefix may be used with degree Celsius. This statement has not been made explicitly before. This is an unfortunate decision because difference-scale units like the degree Celsius have no multiplication operation, so that the prefix value could be multiplied with the unit. Instead the prefix at non-ratio units scales the measurement value. One wonders why the CGPM keeps the celsius temperature in the SI as it is superfluous and in a unique way incoherent with the SI.
+The [Comité Consultatif d'Unités]() (CCU) decided in February 1995 that any SI prefix may be used with degree Celsius. This statement has not been made explicitly before. This is an unfortunate decision because difference-scale units like the degree Celsius have no multiplication operation, so that the prefix value could be multiplied with the unit. Instead the prefix at non-ratio units scales the measurement value. One wonders why the CGPM keeps the celsius temperature in the SI as it is superfluous and in a unique way incoherent with the SI.
 
-The scale factor α is applied with the functions fs and fs-1 as follows: let rs be the numeric measurement value expressed in the special unit s and let m be the corresponding dimensioned quantity, i.e., the measurement with proper unit u. Now, rs = fs(m/u) / α converts the proper measurement to the special unit and m = fs-1(αrs) × u does the reverse.
+The scale factor $\alpha$ is applied with the functions $f_s$ and $f_s^{-1}$ as follows: let $r_s$ be the numeric measurement value expressed in the special unit $s$ and let $m$ be the corresponding dimensioned quantity, i.e., the measurement with proper unit $u$. Now, $r_s = f_s(m/u) / \alpha$ converts the proper measurement to the special unit and $m = f_s^{-1}(\alpha r_s) × u$ does the reverse.
 
-§23 definition of special units        ■1 Special units are marked in the definition tables for unit atoms by a bullet (‘•’) in the column titled “value” and a special expression in the column titled “definition”. The BNF for the special expression is `<special-unit> ::= <function-symbol>"("<floating-point-number>" "<term>")"` The function symbols are defined as needed.    ■2 Special expressions are not valid expressions in UCUM, they are only used for defining special units.
+### 3.1.3 Definition of Special Units
+
+1. Special units are marked in the definition tables for unit atoms by a bullet (‘•’) in the column titled “value” and a special expression in the column titled “definition”. The BNF for the special expression is:
+  
+   `<special-unit> ::= <function-symbol>"("<floating-point-number>" "<term>")"` 
+  
+   The function symbols are defined as needed.
+
+2. Special expressions are _not_ valid expressions in UCUM, they are _only_ used for defining special units.
 
 ## 3.2 Arbitrary Units
 
-§24 arbitrary units        ■1 Arbitrary or procedure defined units are units whose meaning entirely depends on the measurement procedure (assay). These units have no general meaning in relation with any other unit in the SI. Therefore those arbitrary semantic entities are called arbitrary units, as opposed to proper units. The set of arbitrary units is denoted A, where A ∩ U = {}.    ■2 An arbitrary unit has no further definition in the semantic framework of UCUM  ■3 Arbitrary units are not “of any specific dimension” and are not “commensurable with” any other unit.
+### 3.2.1 Preliminaries
 
-Until version 1.6 UCUM has dealt with arbitrary units as dimensionless, but as an effect the semantics of UCUM made all arbitrary units commensurable. Since version 1.7 of UCUM it is no longer possible to convert or compare arbitrary units with any other arbitrary unit.
+1. Arbitrary or procedure defined units are units whose meaning entirely depends on the measurement procedure (assay). These units have no general meaning in relation with any other unit in the SI. Therefore those arbitrary semantic entities are called _arbitrary units+, as opposed to _proper units_. The set of arbitrary units is denoted $A$, where $A \cap U = \{\}$.
 
-§25 operations on arbitrary units        ■1 Any term involving arbitrary units, is itself an arbitrary unit and is not comparable with any other arbitrary unit or term.
+2. An arbitrary unit has no further definition in the semantic framework of UCUM.
 
-§26 definition of arbitrary units        ■1 Arbitrary units are marked in the definition tables for unit atoms by a bullet (‘•’) in the column titled “value” and a bullet in the column titled “definition”.
+3. Arbitrary units are not “of any specific dimension” and are not “commensurable with” any other unit.
+
+Until version 1.6 UCUM had dealt with arbitrary units as dimensionless, but as an effect the semantics of UCUM made all arbitrary units commensurable. Since version 1.7 of UCUM, it is no longer possible to convert or compare arbitrary units with any other arbitrary unit.
+
+### 3.2.2 Operations on Arbitrary Units
+
+1. Any term involving arbitrary units, is itself an arbitrary unit and is not comparable with any other arbitrary unit or term.
+
+### 3.2.3 Definition of Arbitrary Units
+
+1. Arbitrary units are marked in the definition tables for unit atoms by a bullet (‘•’) in the column titled “value” and a bullet in the column titled “definition”.
 
 # 4 Tables of Terminal Symbols
 
 ## 4.1 Prefixes
 
+1. Prefix symbols are those defined in Table 1.
+
+2. There are five columns titled “name,” “print,” “c/s,” “c/i,” and “value” The name is the full (official) name of the unit. The official symbol used in print is listed in the column “print.” Columns “c/s,” and “c/i” list the symbol in the case sensitive and the case insensitive variants respectively. “Value” is the scalar value by which the unit atom is multiplied if combined with the prefix.
+
+3. Only the columns titled “c/s,” “c/i,” and “value,” are normative. Full name and print symbol are defined by the CGPM and are out of scope of UCUM.
+
+The case insensitive prefix symbols are slightly different from those defined by ISO 2955 and ANSI X3.50, where “giga-,” “tera-,” and “peta-” have been `G`, `T`, and `PE`. UCUM has a larger set of unit atoms and needs to prevent more name conflicts. Tera and giga have a second letter to be safe in the future. The change of `PE` to `PT` would be the way to go for ISO 2955 which currently has a name conflict (among others) with peta-volt and pico-electronvolt.
+
+The new prefixes “yotta-,” “zetta-,” “yocto-,” and “zepto-” that were adopted by the 19th CGPM (1990) have a second letter ‘A’ and ‘O’ resp. to avoid current and future conflicts and to disambiguate among themselves. The other submultiples “micro-” to “atto-” are represented by a single letter to keep with the tradition.
+
 ## 4.2 Base Units
 
+1. The base units shown in Table 2 are used to define all the unit atoms of The Unified Code for Units of Measure according to its grammar and semantics.
+
+2. There are five columns titled “name,” “kind of quantity,” “print,” “c/s,” and “c/i.” The name is the full (official) name of the unit. The official symbol used in print this is listed in the column “print.” Columns “c/s,” and “c/i” list the symbol in the case sensitive and the case insensitive variants respectively.
+
+3. Only the columns titled “c/s,” and “c/i,” are normative. Full name and print symbol are defined by other bodies and are out of scope for UCUM.
+
+4. The selection of base units and the particular order are not normative. Any other basis B' that generates an isomorphic group of units is conformant with UCUM.
+
+5. If the other base $B'$ generates a different system of units $U'$ it conforms to UCUM only if there is an homomorphism that maps $U'$ onto $U$.
+
+6. Base units must be metric units only. Special units cannot be base units.
+
+As can be seen the base system used to define UCUM is different from the system used by the [Système International d'Unités]() (SI) The SI base unit kilogram has been replaced by gram and the mole has been replaced by the radian that is defined dimensionless in the SI. Because of the latter change UCUM is not isomorphic with the SI.
+
+The replacement of the kilogram is trivial. In order to bring syntax and semantics in line we can not have a unit with prefix in the base. We need a valid unit of mass before we can combine it with the prefix “kilo-” This change does not have any effect on the semantics whatsoever. The base unit kilogram is one of the oddities of the SI: if the gram would have been chosen as a base units the CGPM could have saved the rather annoying exception of the prefixing rules with the kilogram. At times where we have to multiply the wavelength of excited krypton-86 atoms by 1650763.73 to yield one meter, it seems trivial to divide the prototype of the kilogram by thousand to yield a base unit gram.
+
+The rationale for removing the mole from the base is that the mole is essentially a count of particles expressed in a unit of very high magnitude (Avogadro's number). There is no fundamental difference between the count of particles and the count other things.
+
+The radian has been adopted as the base unit of plane angle $\alpha$ to facilitate the distinction from the solid angle $\Omega$ by the relation $\Omega = \alpha 2$ and to distinguish rotational frequency $f$ from angular velocity $\omega = 2 \pi ·$ rad $· f$.
+
+Table 2: The base units upon which the semantics of all the unit atoms in The Unified Code for Units of Measure are defined. The selection of the base and the order of the units in the base are not normative. Any other base is acceptable as long as there is an isomorphism between the group of units generated by the other base system and this one. All base units are metric.
+
 ## 4.3 Derived Unit Atoms
+
+### 4.3.1 Dimensionless Units
+
+1. Dimensionless unit atoms are defined in Table 3.
+   
+2. There are seven columns titled “name,” “print,” “c/s,” “c/i,” “M,” “value,” and “definition.” The name is the full (official) name of the unit. The symbol recommended for use in print this is listed in the column “print.” Columns “c/s,” and “c/i” list the symbol in the case sensitive and the case insensitive variants respectively. The column “M” specifies whether this is a metric unit. The definition is a valid, case-sensitive expression of UCUM that defines the unit atom.
+
+3. Only the columns titled “c/s,” “c/i,” “M,” “value,” and “definition” are normative. Full name and print symbol are out of scope of UCUM.
+
+4. The units named “parts per $N$” are provided to be used where absolutely necessary but are not endorsed. Especially “ppb” and “pptr” are deprecated since “billion” and “trillion” are ambiguous names internationally. The explicit powers of ten should be given instead.
+
+Table 3: Dimensionless units. The units ppb and ppt are deprecated because the names “billion” and “trillion” are ambiguous. The expression “10*-9” or “10*-12” should be used instead. When the units percent or “parts per $N$” are used for concentrations specific units are prefered, e.g., “ug/l” for mass concentration. The expression “ug/kg” for ppb is also valid.
+
+The notation `10*` for powers of ten originated in the HL7 “ISO+“ extension of ISO 2955. In HL7 the character carat (`^`) was thought as reserved. Since most people would expect to see `10^3` for the “third power of ten” and might in fact confuse `10*3` to mean “ten times 3”, the symbol using the carat was later added to UCUM.
+
+### 4.3.2 SI Units
+
+
 
 ## 4.4 Customary Unit Atoms
 
