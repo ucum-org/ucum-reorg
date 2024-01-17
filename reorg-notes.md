@@ -15,6 +15,11 @@ Notable changes:
 - Numerous organization names and standards were distinguished with `<emph>` (i.e. italics). These have been largely replaced in favor of links to organization websites or other source information.
 - Algebra and other mathematical equations take advantage of LaTeX math notation. Section 3.0.5.2 is an example of clarity provided with this formatting.
 - Typos corrected throughout.
+- For License:
+  - Removed intra-paragraph line breaks.
+  - Removed 'Section' from section headings.
+  - Removed trailing periods from headings.
+  - Changed sub section numbering, e.g. section 1.5 became point 5 under section 1, to adhere to numbering within spec.
 
 Questions and concerns for future consideration:
 
