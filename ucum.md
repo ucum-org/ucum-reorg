@@ -4,11 +4,11 @@ shortTitle: UCUM Spec
 showMiniToc: true
 ---
 
-# 1 Introduction
+# 1. Introduction
 
 The Unified Code for Units of Measure (UCUM) is a code system intended to include all units of measures being contemporarily used in international science, engineering, and business. The purpose is to facilitate unambiguous electronic communication of quantities together with their units. The focus is on electronic communication, as opposed to communication between humans. A typical application of UCUM are electronic data interchange (EDI) protocols, but there is nothing that prevents it from being used in other types of machine communication.
 
-UCUM is inspired by and heavily based on [ISO 2955-1983](), [ANSI X3.50-1986](), and [HL7’s](http://hl7.org) extensions called “ISO+”. The respective ISO and ANSI standards are both entitled “Representation of [...] units in systems with limited character sets” where ISO 2955 refers to SI and other units provided by ISO 1000-1981, while ANSI X3.50 extends ISO 2955 to include U.S. customary units. Because these standards carry the restriction of “limited character sets” in their names they seem to be of less value today, when graphical user interfaces and laser printers are in wide-spread use. For this reason, the European standard [ENV 12435]() in its clause 7.3 declares ISO 2955 obsolete.
+UCUM is inspired by and heavily based on [ISO 2955-1983](), [ANSI X3.50-1986](), and [HL7’s](http://hl7.org) extensions called “ISO+”. The respective ISO and ANSI standards are both entitled “Representation of \[...\] units in systems with limited character sets” where ISO 2955 refers to SI and other units provided by ISO 1000-1981, while ANSI X3.50 extends ISO 2955 to include U.S. customary units. Because these standards carry the restriction of “limited character sets” in their names they seem to be of less value today, when graphical user interfaces and laser printers are in wide-spread use. For this reason, the European standard [ENV 12435]() in its clause 7.3 declares ISO 2955 obsolete.
 
 ENV 12435 is dedicated exclusively to the communication of measurements between humans in display and print, and does not provide codes that can be used in communication between systems. It does not even provide a specification that would allow communication of units from one system to the screen or printer of another system. The issue about displaying units in the common style defined by the 9th [Conférence Générale des Poids et Mesures]() (CGPM) in 1947 is not just the character set. Although the [Unicode]() standard and its predecessor ISO/IEC 10646 is the richest character set ever, it is still not enough to specify the presentation of units, because there are important typographical details such as superscripts, subscripts, roman and italics.[^1]
 
@@ -26,7 +26,7 @@ UCUM provides a single coding system for units that is complete, free of all amb
 
 In short, each unit is defined relative to a system of base units by a numeric factor and a vector of exponents by which the base units contribute to the unit to be defined. Although we can reflect all the meaning of units covered by dimensional analysis with this vector notation, the following tables do not show these vectors. One reason is that the vectors depend on the base system chosen and even on the ordering of the base units. The other reason is that these vectors are hard to understand to human readers while they can be easily derived computationally. Therefore we define new unit symbols using algebraic terms of other units. Those algebraic terms are also valid codes of UCUM.
 
-# 2 Grammar of Units and Unit Terms
+# 2. Grammar of Units and Unit Terms
 
 ### 2.0.1 Preliminaries
 
@@ -242,7 +242,7 @@ If unit symbols for the purpose of display and print are derived from UCUM units
 For example, such legacy units called “Bodansky unit” or “Todd unit” have the unit symbols `[bdsk'U]`, and `[todd'U]` respectively.
 
 
-# 3 Semantics
+# 3. Semantics
 
 ### 3.0.1 Preliminaries
 
@@ -346,7 +346,7 @@ Until version 1.6 UCUM had dealt with arbitrary units as dimensionless, but as a
 
 1. Arbitrary units are marked in the definition tables for unit atoms by a bullet (‘•’) in the column titled “value” and a bullet in the column titled “definition”.
 
-# 4 Tables of Terminal Symbols
+# 4. Tables of Terminal Symbols
 
 ## 4.1 Prefixes
 
@@ -798,7 +798,7 @@ This table reflects proposed prefixes which are not yet standardized. [Bruce Bar
 
 # Appendices
 
-## A Examples for Some Non-Units
+## A. Examples for Some Non-Units
 
 1. Symbols commonly used as units that are no real units of measurements are not defined by UCUM.
 
@@ -812,17 +812,17 @@ This table reflects proposed prefixes which are not yet standardized. [Bruce Bar
 
 Although customarily cardiac stroke work is notated as “g.m” this is not a true unit of work. Instead one should use gram-force meter.
 
-## B Summary of Conflicts
+## B. Summary of Conflicts
 
 UCUM is designed and maintained so that severe name conflicts do not occur. However, avoiding all conflicts is possible only at the cost of defining very unusual symbols for those units. As the Table 25 shows, all current conflicts are of type IVa between metric and nonmetric units. This means that there is only a conflict if the metric predicate is violated so that non-metric units are used with a prefix. [Schadow G, McDonald CJ et al: Units of Measure in Clinical Information Systems. JAMIA 6(2); Mar/Apr 1999. p. 151-162.]
 
 #### Table 25: Summary of name conflicts
 
-## C Alphabetic Index
+## C. Alphabetic Index
 
 This section to be replaced.
 
-## D Example Unit Terms
+## D. Example Unit Terms
 
 The following table lists example unit terms that are commonly used in medicine. Since the space of possible unit terms is infinite in theory and very large in practice, no attempt has been made on a systematic coverage of possible units. All necessary units can be built from the rules of UCUM and there is no need of a particular term to be enumerated in order to be valid.
 
@@ -836,7 +836,7 @@ The columns are: (1) the case sensitive unit term and variants; (2) a plain text
 
 The example unit terms are given with alternatives for the following reason. The source of the example terms is the HL7 version 2.4 specification of chapter 7. To show the essential differences between UCUM and the HL7 version 2.4 codes, the first column shows unit terms that are as similar to the HL7 2.4 published terms as possible. However, the HL7 version 2.4 suggested unit terms were sometimes unnecessarily complicated (e.g., the unit 1 dyn cast as 10 μN; decimal factors instead of the standard multiplier prefixes, nested parenthetical terms in divisions, etc.), even sometimes suggesting deprecated conventional habits (e.g., using annotations like “/g{HGB}” instead of just “/g”.) Hence, the second column ”alternative suggestions” lists equivalent unit terms that are either more straightforward or more appropriate or both.
 
-## E Copyright and License Terms of Use
+## E. Copyright and License Terms of Use
 
 This section to be referenced by separate [License](LICENSE.md) file.
 
